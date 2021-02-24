@@ -52,6 +52,23 @@ app.get('/api/candidate/:id', (req, res) => {
       });
     });
 });
+
+// Delete a candidate
+app.delete('/api/candidate/:id', (req, res) => {
+    const sql = `DELETE FROM candidates WHERE id = ?`;
+    const params = [req.params.id];
+    db.run(sql, params, function(err, result) {
+      if (err) {
+        res.status(400).json({ error: res.message });
+        return;
+      }
+  
+      res.json({
+        message: 'successfully deleted',
+        changes: this.changes
+      });
+    });
+});
 // returns an array of objects for each row of the table in the database
 // db.all(`SELECT * FROM candidates`, (err, rows) => {
 //     console.log(rows);
