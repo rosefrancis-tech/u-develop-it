@@ -1,7 +1,9 @@
+// Import Database
+const db = require('./db/database');
+
 // Import express
 const express = require('express');
-// Import SQLite
-const sqlite3 = require('sqlite3').verbose();
+
 // Import input check
 const inputCheck = require('./utils/inputCheck');
 
@@ -13,14 +15,7 @@ const app = express();
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// Connect to database
-const db = new sqlite3.Database('./db/election.db', err => {
-    if (err) {
-      return console.error(err.message);
-    }
-  
-    console.log('Connected to the election database.');
-});
+
 // Get all candidates
 app.get('/api/candidates', (req, res) => {
     //const sql = `SELECT * FROM candidates`;
