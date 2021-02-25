@@ -108,7 +108,53 @@ app.post('/api/candidate', ({ body }, res) => {
         });
     });
 });
+// Get all parties
+app.get('/api/parties', (req, res) => {
+    const sql = `SELECT * FROM parties`;
+    const params = [];
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+  
+      res.json({
+        message: 'success',
+        data: rows
+      });
+    });
+});
 
+// Get a single party
+app.get('/api/party/:id', (req, res) => {
+    const sql = `SELECT * FROM parties WHERE id = ?`;
+    const params = [req.params.id];
+    db.get(sql, params, (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+  
+      res.json({
+        message: 'success',
+        data: row
+      });
+    });
+});
+
+// Delete parties
+app.delete('/api/party/:id', (req, res) => {
+    const sql = `DELETE FROM parties WHERE id = ?`;
+    const params = [req.params.id];
+    db.run(sql, params, function(err, result) {
+      if (err) {
+        res.status(400).json({ error: res.message });
+        return;
+      }
+  
+      res.json({ message: 'successfully deleted', changes: this.changes });
+    });
+});
 // returns an array of objects for each row of the table in the database
 // db.all(`SELECT * FROM candidates`, (err, rows) => {
 //     console.log(rows);
